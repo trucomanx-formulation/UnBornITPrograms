@@ -1,0 +1,146 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+
+\usepackage{graphicx}
+
+ 
+%Para \lstset e insertar codigo
+\usepackage{listings}
+\usepackage{color}
+
+\lstset{%
+  frame=tb,
+  language=Octave,%linguagem por defeito
+  %
+  aboveskip=3mm,
+  belowskip=3mm,
+  %backgroundcolor=\color{myverylowgray},
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  %
+  numbers=none,
+  numberstyle=\tiny\color{mygray},
+  %
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=4
+}
+
+%opening
+\title{Decodification cost in CEO problem: test\_ber\_vs\_hbu0omega.m}
+\author{Fernando Pujaico Rivera}
+
+\begin{document}
+
+\maketitle
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{abstract}
+test\_ber\_vs\_hbu0omega compare the relation between $P(\hat{U}_0 \neq U_0)$ and
+$H(U_0|\Omega_M)$ in the model  system.
+\end{abstract}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+
+\lstset{language=octave}%orden importa
+\begin{lstlisting}
+ test_ber_vs_hbu0omega
+\end{lstlisting}
+In the Figure \ref{fig:modelo} the source $U_0$, $P(U_0=1)=0.5$, trough across 
+$M$ BSC channels, with error probability $P_s$, generating the  sources $U_m$, 
+$\forall m \in S=\{1, 2, ..., M\}$. In this context we said $\Omega_M=\{U_m \in S\}$.
+In the Figure \ref{fig:modelo2} also can be seen that $\Omega_M=g(U_0)$.
+\begin{figure}[h!bt]
+\centering
+\resizebox {0.9\columnwidth} {!} { \convertMPtoPDF {../modelo.1}{1}{1} }
+\caption{System Model (In extend).} \label{fig:modelo}
+\end{figure}
+Known $\Omega_M$, this values are decoded for to get $\hat{U}_0$, a approximate 
+version of $U_0$, so that $\hat{U}_0=f(\Omega_M)$.
+\begin{figure}[h!bt]
+\centering
+\resizebox {0.9\columnwidth} {!} { \convertMPtoPDF {../modelo2.1}{1}{1} }
+\caption{System Model (short).} \label{fig:modelo2}
+\end{figure}
+
+\begin{equation}
+H(U_0|f(\Omega_m)) = H(U_0|\hat{U}_0) = h_b(P(\hat{U_0} \neq U_0))
+\end{equation}
+thereby
+\begin{equation}
+h_b(P(\hat{U_0} \neq U_0)) \geq H(U_0|\Omega_M) 
+\end{equation}
+or if we consider $P(\hat{U_0} \neq U_0)<0.5$
+\begin{equation}
+P(\hat{U_0} \neq U_0) \geq h_b^{-1}(H(U_0|\Omega_M))
+\end{equation}
+
+\subsection{Working with the probability $P(\hat{U_0} \neq U_0)$}
+In \cite{Abrardo2009,Ferrari2012} is considered a maximum a posteriori ($MAP$) 
+fusion rule $f(\Omega_M)$, 
+where the output value $\hat{u}_0$ of $\hat{U}_0$
+is obtained as
+\begin{equation}
+\begin{matrix}
+ \hat{u}_0 & =      & \arg_{u_0} \max P(U_0|\Omega_M)\\
+ ~         & \equiv & \arg_{u_0} \max P(\Omega_M|U_0)\
+\end{matrix}
+\end{equation}
+Thus, considering that $m_0$ is the number of zeros in $\Omega_M$, the decision is simplify to 
+\begin{equation}
+m_0
+\begin{matrix}
+\hat{u}_0=1 \\
+\geq \\
+< \\
+\hat{u}_0=0
+\end{matrix}
+\lfloor \frac{M}{2}\rfloor
+\end{equation}
+In this expression is considered that if  $M$ is even and $m_0=M/2$, the decision 
+is arbitrarily assume that $\hat{u}_0 = 1$,
+so that  $P(\hat{U_0} \neq U_0)$ is $P_e=0.5~[ P(\hat{u}_0=0|u_0=1)+P(\hat{u}_0=1|u_0=0) ]$,
+\begin{equation} \label{eq:abrardo}
+ P_e= 0.5 \sum_{k=0}^{\lfloor \frac{M}{2} \rfloor -1}  \binom{M}{k} {(1-P_s)}^{k}   {P_s}^{M-k} 
+    + 0.5 \sum_{k=\lfloor \frac{M}{2}     \rfloor}^{M} \binom{M}{k} {(1-P_s)}^{M-k} {P_s}^{k}   
+\end{equation}
+where, $\lfloor . \rfloor$ is the floor function and the value $P_e$ only is valid for
+values of $P_s \leq 1/2$ 
+\footnote{Here is important note that in \cite{Abrardo2009,Ferrari2012} your value $\rho$
+is equal to $1-P_s$ here, and your result is for $\rho > 0.5$}. The Equation 
+(\ref{eq:abrardo}) can be sort as
+\begin{equation}
+P_e= 
+\begin{cases}
+\sum \limits_{k=\lfloor \frac{M}{2} \rfloor +1}^{M} \binom{M}{k}  (1-P_s)^{M-k} P_s^k & \text{ if } M~odd \\ 
+~ & ~ \\
+\sum \limits_{k=\lfloor \frac{M}{2} \rfloor +1}^{M} \binom{M}{k}  (1-P_s)^{M-k} P_s^k & \text{ if } M~even \\
+~~~~+0.5~\binom{M}{\frac{M}{2}}  (1-P_s)^{\frac{M}{2}} P_s^{\frac{M}{2}} & ~ \\
+\end{cases}
+\end{equation}
+This form is the form showed in \cite{XXXX}.
+\subsection{Working with the probability $H(U_0|\Omega_M)$}
+\begin{equation}
+  H(U_0|\Omega_M)  = \sum_{k=0}^M \binom{M}{k} p_s^k (1-p_s)^{M-k} log_2\left ( 1 +  {\frac{p_s}{(1-p_s)}}^{M-2k} \right )
+\end{equation}
+
+ \begin{thebibliography}{99}
+\bibitem{Abrardo2009}
+Abrardo, A.; Ferrari, G.; Martalò, M.; Perna, F. Feedback Power Control Strategies in 
+Wireless Sensor Networks with Joint Channel Decoding. Sensors 2009, 9, 8776-8809.
+doi:10.3390/s91108776
+ 
+\bibitem{Ferrari2012}
+Ferrari, G.; Martalo, M.; Abrardo, A.; Raheli, R., "Orthogonal multiple access 
+and information fusion: How many observations are needed?," Information Theory and 
+Applications Workshop (ITA), 2012 , vol., no., pp.311,320, 5-10 Feb. 2012.
+doi: 10.1109/ITA.2012.6181783
+ 
+ \end{thebibliography} 
+
+\end{document}

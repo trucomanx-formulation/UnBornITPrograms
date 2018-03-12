@@ -1,0 +1,124 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+
+\usepackage{graphicx}
+
+ 
+%Para \lstset e insertar codigo
+\usepackage{listings}
+\usepackage{color}
+
+\lstset{%
+  frame=tb,
+  language=Octave,%linguagem por defeito
+  %
+  aboveskip=3mm,
+  belowskip=3mm,
+  %backgroundcolor=\color{myverylowgray},
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  %
+  numbers=none,
+  numberstyle=\tiny\color{mygray},
+  %
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=4
+}
+
+%opening
+\title{Other complicated way of $H(U_0|U_1 ... U_M)$}
+\author{Fernando Pujaico Rivera}
+
+\begin{document}
+
+\maketitle
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{abstract}
+Prove experimentally one hypothesis.
+\end{abstract}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+
+Knowing that:
+\begin{equation}
+H(U_0|U_1 U_2) = h_b(p_1) + h_b(p_2) - h_b(p_1||p_2)
+\end{equation}
+
+where the operator ``$||$'' work the next way:
+$a||b \equiv a+b-2ab$. Also $a||b||c \equiv a+b+c-2ab-2ac-2bc+4abc$.
+%\lstset{language=octave}%orden importa
+%\begin{lstlisting}
+% test_ber_vs_hbu0omega
+%\end{lstlisting}
+It was see experimentally that
+\begin{equation}\label{eq:test1}
+\begin{matrix}
+H(U_0|U_1 U_2 U_3) & \approx & h_b(p_1) + h_b(p_2) + h_b(p_3) \\
+~                  & ~       & - h_b(p_1||p_2)- h_b(p_1||p_3) - h_b(p_2||p_3)\\
+~                  & ~       & + h_b(p_1||p_2||p_3)\\
+\end{matrix}
+\end{equation}
+and
+\begin{equation}\label{eq:test2}
+\begin{matrix}
+H(U_0|U_1 U_2 U_3 U_4) & \approx & h_b(p_1) + h_b(p_2) + h_b(p_3) + h_b(p_4)\\
+~                      & ~       & ~\\
+~                      & ~       & - h_b(p_1||p_2)- h_b(p_1||p_3) - h_b(p_1||p_4)\\
+~                      & ~       & - h_b(p_2||p_3)- h_b(p_2||p_4) - h_b(p_3||p_4)\\
+~                      & ~       & ~\\
+~                      & ~       & + h_b(p_1||p_2||p_3)+ h_b(p_1||p_2||p_4)\\
+~                      & ~       & + h_b(p_2||p_3||p_4)+ h_b(p_1||p_3||p_4)\\
+~                      & ~       & ~\\
+~                      & ~       & - h_b(p_1||p_2||p_3||p_4)\\
+\end{matrix}
+\end{equation}
+(\ref{eq:test1}) and (\ref{eq:test2}) were prove experimentally as true.
+Them, my  hypothesis is:
+\begin{equation}
+\begin{matrix}
+H(U_0|U_1 ... U_M) & \approx & (-1)^{1+1}~~~\sum \limits_{a_1}        ~~h_b(p_{a_1})~~~~~~~~~~~~~\\
+~                  & ~       & (-1)^{2+1}~~\sum \limits_{a_1,a_2}    ~h_b(p_{a_1}||p_{a_2})~~~~~~~\\
+~                  & ~       & (-1)^{3+1}\sum \limits_{a_1,a_2,a_3} h_b(p_{a_1}||p_{a_2}||p_{a_3})\\
+~                  & ~       & \vdots\\
+~                  & ~       & (-1)^{M+1}\sum \limits_{a_1, ...,a_M} h_b(p_{a_1}||...||p_{a_M})\\
+
+
+\end{matrix}
+\end{equation}
+
+\begin{equation}
+\begin{matrix}
+H(U_1 ... U_M) & \approx & +1\\
+~              & ~       & (-1)^{2}~~\sum \limits_{a_1,a_2}    ~h_b(p_{a_1}||p_{a_2})~~~~~~~\\
+~              & ~       & (-1)^{3}\sum \limits_{a_1,a_2,a_3} h_b(p_{a_1}||p_{a_2}||p_{a_3})\\
+~              & ~       & \vdots\\
+~              & ~       & (-1)^{M}\sum \limits_{a_1, ...,a_M} h_b(p_{a_1}||...||p_{a_M})\\
+
+
+\end{matrix}
+\end{equation}
+
+\subsection{Demonstration}
+
+ \begin{thebibliography}{99}
+\bibitem{Abrardo2009}
+Abrardo, A.; Ferrari, G.; Martalò, M.; Perna, F. Feedback Power Control Strategies in 
+Wireless Sensor Networks with Joint Channel Decoding. Sensors 2009, 9, 8776-8809.
+doi:10.3390/s91108776
+ 
+\bibitem{Ferrari2012}
+Ferrari, G.; Martalo, M.; Abrardo, A.; Raheli, R., "Orthogonal multiple access 
+and information fusion: How many observations are needed?," Information Theory and 
+Applications Workshop (ITA), 2012 , vol., no., pp.311,320, 5-10 Feb. 2012.
+doi: 10.1109/ITA.2012.6181783
+ 
+ \end{thebibliography} 
+
+\end{document}
